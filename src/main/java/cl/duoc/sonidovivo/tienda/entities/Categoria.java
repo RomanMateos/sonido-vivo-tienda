@@ -1,4 +1,4 @@
-package cl.duoc.sonidovivotienda.entities;
+package cl.duoc.sonidovivo.tienda.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;

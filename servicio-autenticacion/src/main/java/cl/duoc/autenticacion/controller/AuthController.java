@@ -25,13 +25,13 @@ public class AuthController {
     }
 
     @PostMapping("/sincronizar")
-    public ResponseEntity> sincronizar(@Valid @RequestBody UsuarioAuthRequest request) {
+    public ResponseEntity< Map<String, Object> > sincronizar(@Valid @RequestBody UsuarioAuthRequest request) {
         authService.sincronizarUsuario(request);
         return ResponseEntity.ok(Map.of("mensaje", "Credenciales sincronizadas correctamente"));
     }
 
     @GetMapping("/perfil")
-    public ResponseEntity> perfil(Authentication authentication) {
+    public ResponseEntity< Map<String, Object> > perfil(Authentication authentication) {
         String rol = authentication.getAuthorities().stream()
                 .findFirst()
                 .map(auth -> auth.getAuthority().replace("ROLE_", ""))

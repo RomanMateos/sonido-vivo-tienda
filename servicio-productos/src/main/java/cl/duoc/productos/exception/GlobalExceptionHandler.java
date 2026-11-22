@@ -16,17 +16,17 @@ import java.util.Map;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity> handleNotFound(ResourceNotFoundException ex) {
+    public ResponseEntity< Map<String, Object> > handleNotFound(ResourceNotFoundException ex) {
         return buildResponse(HttpStatus.NOT_FOUND, ex.getMessage());
     }
 
     @ExceptionHandler(BusinessException.class)
-    public ResponseEntity> handleBusiness(BusinessException ex) {
+    public ResponseEntity< Map<String, Object> > handleBusiness(BusinessException ex) {
         return buildResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity> handleValidation(MethodArgumentNotValidException ex) {
+    public ResponseEntity< Map<String, Object> > handleValidation(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
         for (FieldError error : ex.getBindingResult().getFieldErrors()) {
             errors.put(error.getField(), error.getDefaultMessage());
@@ -40,11 +40,11 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity> handleAccessDenied(AccessDeniedException ex) {
+    public ResponseEntity< Map<String, Object> > handleAccessDenied(AccessDeniedException ex) {
         return buildResponse(HttpStatus.FORBIDDEN, "No tienes permisos para realizar esta operación");
     }
 
-    private ResponseEntity> buildResponse(HttpStatus status, String message) {
+    private ResponseEntity< Map<String, Object> > buildResponse(HttpStatus status, String message) {
         Map<String, Object> body = new HashMap<>();
         body.put("timestamp", LocalDateTime.now());
         body.put("status", status.value());

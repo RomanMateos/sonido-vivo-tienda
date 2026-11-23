@@ -1,5 +1,6 @@
 package cl.duoc.sonidovivo.tienda.security;
 
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -23,19 +24,25 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            // Deshabilitar CSRF porque usamos tokens JWT, no cookies de sesión
             .csrf(AbstractHttpConfigurer::disable)
-            // Indicar que nuestra API es Stateless (sin estado)
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .exceptionHandling(ex -> ex
+                .authenticationEntryPoint((request, response, authException) ->
+                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "No autorizado: token ausente o invalido")
+                )
+            )
             .authorizeHttpRequests(auth -> auth
-                // 1. Permitir acceso público a Swagger para ver la documentación
+                // 1. Swagger publico
                 .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
-                // 2. Permitir a cualquier visitante ver el catálogo de productos y categorías
-                .requestMatchers(HttpMethod.GET, "/api/productos/**", "/api/categorias/**").permitAll()
-                // 3. Cualquier otra petición (POST, PUT, DELETE) requiere un token válido
+                // 2. Catalogo publico (lectura GET para todos)
+                .requestMatchers(HttpMethod.GET, "/api/v1/productos/**", "/api/v1/categorias/**", "/api/v1/marcas/**").permitAll()
+                // 3. Escritura (POST, PUT, DELETE) solo para ADMINISTRADOR
+                .requestMatchers(HttpMethod.POST, "/api/v1/productos/**", "/api/v1/categorias/**", "/api/v1/marcas/**").hasRole("ADMINISTRADOR")
+                .requestMatchers(HttpMethod.PUT, "/api/v1/productos/**", "/api/v1/categorias/**", "/api/v1/marcas/**").hasRole("ADMINISTRADOR")
+                .requestMatchers(HttpMethod.DELETE, "/api/v1/productos/**", "/api/v1/categorias/**", "/api/v1/marcas/**").hasRole("ADMINISTRADOR")
+                // 4. Cualquier otra peticion requiere estar autenticado
                 .anyRequest().authenticated()
             )
-            // 4. Insertar nuestro filtro JWT antes del filtro estándar de Spring Security
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

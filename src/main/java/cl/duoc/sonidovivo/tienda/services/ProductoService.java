@@ -25,7 +25,7 @@ public class ProductoService {
         return repository.save(producto);
     }
 
-    public Producto actualizar(Long id, Producto datos) {
+ public Producto actualizar(Long id, Producto datos) {
         Producto actual = buscar(id);
         actual.setNombre(datos.getNombre());
         actual.setDescripcion(datos.getDescripcion());
@@ -33,6 +33,7 @@ public class ProductoService {
         actual.setStock(datos.getStock());
         actual.setImagenUrl(datos.getImagenUrl());
         actual.setCategoria(datos.getCategoria());
+        actual.setMarca(datos.getMarca());
         return repository.save(actual);
     }
 

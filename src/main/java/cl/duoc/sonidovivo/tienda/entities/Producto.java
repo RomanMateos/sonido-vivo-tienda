@@ -17,6 +17,11 @@ public class Producto {
     @JoinColumn(name = "id_categoria", nullable = false)
     private Categoria categoria;
 
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "marca_id", nullable = false)
+    private Marca marca;
+
     @NotBlank
     @Size(max = 150)
     @Column(nullable = false, length = 150)

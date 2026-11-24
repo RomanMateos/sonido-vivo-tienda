@@ -13,15 +13,15 @@
         </processorPath>
         <module name="servicio-autenticacion" />
       </profile>
-      <profile name="Annotation profile for servicio-reportes" enabled="true">
+      <profile name="Annotation profile for sonido-vivo-tienda" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.48/lombok-1.18.48.jar" />
         </processorPath>
-        <module name="servicio-contacto" />
         <module name="sonido-vivo-tienda" />
+        <module name="servicio-contacto" />
         <module name="servicio-blog" />
         <module name="servicio-boletas" />
         <module name="servicio-ventas" />

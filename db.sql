@@ -22,6 +22,8 @@ DROP TABLE IF EXISTS sonido_productos.marcas;
 -- 4. sonido_ventas (detalle_ventas -> ventas)
 DROP TABLE IF EXISTS sonido_ventas.detalle_ventas;
 DROP TABLE IF EXISTS sonido_ventas.ventas;
+DROP TABLE IF EXISTS sonido_ventas.detalle_carrito;
+DROP TABLE IF EXISTS sonido_ventas.carrito;
 
 -- 5. sonido_blog
 DROP TABLE IF EXISTS sonido_blog.blog;
@@ -228,7 +230,8 @@ CREATE TABLE IF NOT EXISTS contacto (
     apellidos VARCHAR(100) NOT NULL,
     email VARCHAR(120) NOT NULL,
     fecha DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    mensaje TEXT NOT NULL
+    mensaje TEXT NOT NULL,
+    estado VARCHAR(20) NOT NULL DEFAULT 'PENDIENTE'
 ) ENGINE=InnoDB;
 
 -- ----------------------------------------------------------------------------

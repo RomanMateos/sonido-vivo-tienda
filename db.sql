@@ -180,6 +180,24 @@ CREATE TABLE IF NOT EXISTS detalle_ventas (
     CONSTRAINT fk_detalle_ventas_venta FOREIGN KEY (venta_id) REFERENCES ventas(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
+CREATE TABLE IF NOT EXISTS carritos (
+                                        id BIGINT AUTO_INCREMENT PRIMARY KEY,
+                                        usuario_email VARCHAR(120) NOT NULL UNIQUE,
+    fecha_actualizacion DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    ) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS detalle_carrito (
+                                               id BIGINT AUTO_INCREMENT PRIMARY KEY,
+                                               carrito_id BIGINT NOT NULL,
+                                               producto_id BIGINT NOT NULL,
+                                               nombre_producto VARCHAR(150) NOT NULL,
+    precio_unitario INT NOT NULL,
+    imagen VARCHAR(500) NOT NULL,
+    cantidad INT NOT NULL,
+    CONSTRAINT fk_detalle_carrito_carrito FOREIGN KEY (carrito_id) REFERENCES carritos(id) ON DELETE CASCADE,
+    CONSTRAINT uk_carrito_producto UNIQUE (carrito_id, producto_id)
+    ) ENGINE=InnoDB;
+
 -- ----------------------------------------------------------------------------
 -- 5. BASE DE DATOS: sonido_blog (Puerto 8085)
 -- ----------------------------------------------------------------------------

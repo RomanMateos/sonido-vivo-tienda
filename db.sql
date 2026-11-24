@@ -74,6 +74,10 @@ CREATE DATABASE IF NOT EXISTS sonido_boletas
 CREATE USER IF NOT EXISTS 'boletas_app'@'localhost' IDENTIFIED BY 'ClaveBoletas2026!';
 GRANT ALL PRIVILEGES ON sonido_boletas.* TO 'boletas_app'@'localhost';
 
+CREATE DATABASE IF NOT EXISTS sonido_reportes CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE USER IF NOT EXISTS 'reportes_app'@'localhost' IDENTIFIED BY 'ClaveReportes2026!';
+GRANT ALL PRIVILEGES ON sonido_reportes.* TO 'reportes_app'@'localhost';
+
 FLUSH PRIVILEGES;
 
 -- ----------------------------------------------------------------------------
@@ -261,4 +265,41 @@ CREATE TABLE IF NOT EXISTS detalle_boletas (
     cantidad INT NOT NULL,
     subtotal INT NOT NULL,
     CONSTRAINT fk_detalle_boletas_boleta FOREIGN KEY (boleta_id) REFERENCES boletas(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ----------------------------------------------------------------------------
+-- 8. BASE DE DATOS: sonido_reportes (Puerto 8088)
+-- ----------------------------------------------------------------------------
+
+USE sonido_reportes;
+
+CREATE TABLE IF NOT EXISTS reportes (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    titulo VARCHAR(150) NOT NULL,
+    fecha_emision DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    emitido_por VARCHAR(120) NOT NULL,
+    fecha_inicio DATE NULL,
+    fecha_fin DATE NULL,
+
+    -- Indicadores de Usuarios
+    total_usuarios INT NOT NULL,
+
+    -- Indicadores de Ventas
+    cantidad_ventas_validas INT NOT NULL,
+    cantidad_ventas_anuladas INT NOT NULL,
+    monto_total_ventas BIGINT NOT NULL,
+    ventas_despacho_cantidad INT NOT NULL,
+    ventas_despacho_monto BIGINT NOT NULL,
+    ventas_retiro_cantidad INT NOT NULL,
+    ventas_retiro_monto BIGINT NOT NULL,
+
+    -- Indicadores de Inventario
+    total_productos_catalogo INT NOT NULL,
+    total_unidades_stock INT NOT NULL,
+    valor_total_inventario BIGINT NOT NULL,
+    cantidad_bajo_stock INT NOT NULL,
+    cantidad_sin_stock INT NOT NULL,
+
+    -- Instantánea JSON (desglose por rol, lista bajo stock, lista sin stock)
+    detalle_snapshot LONGTEXT NOT NULL
 ) ENGINE=InnoDB;

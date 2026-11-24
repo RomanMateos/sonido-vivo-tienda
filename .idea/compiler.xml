@@ -13,7 +13,7 @@
         </processorPath>
         <module name="servicio-autenticacion" />
       </profile>
-      <profile name="Annotation profile for servicio-contacto" enabled="true">
+      <profile name="Annotation profile for servicio-reportes" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
@@ -26,6 +26,7 @@
         <module name="servicio-boletas" />
         <module name="servicio-ventas" />
         <module name="servicio-productos" />
+        <module name="servicio-reportes" />
         <module name="servicio-usuarios" />
       </profile>
     </annotationProcessing>
@@ -37,6 +38,7 @@
       <module name="servicio-boletas" options="-parameters" />
       <module name="servicio-contacto" options="-parameters" />
       <module name="servicio-productos" options="-parameters" />
+      <module name="servicio-reportes" options="-parameters" />
       <module name="servicio-usuarios" options="-parameters" />
       <module name="servicio-ventas" options="-parameters" />
       <module name="sonido-vivo-tienda" options="-parameters" />

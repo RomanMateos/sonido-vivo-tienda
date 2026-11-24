@@ -13,7 +13,7 @@
         </processorPath>
         <module name="servicio-autenticacion" />
       </profile>
-      <profile name="Annotation profile for servicio-boletas" enabled="true">
+      <profile name="Annotation profile for servicio-blog" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
@@ -22,6 +22,7 @@
         </processorPath>
         <module name="sonido-vivo-tienda" />
         <module name="servicio-productos" />
+        <module name="servicio-blog" />
         <module name="servicio-boletas" />
         <module name="servicio-ventas" />
         <module name="servicio-usuarios" />
@@ -31,6 +32,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="servicio-autenticacion" options="-parameters" />
+      <module name="servicio-blog" options="-parameters" />
       <module name="servicio-boletas" options="-parameters" />
       <module name="servicio-productos" options="-parameters" />
       <module name="servicio-usuarios" options="-parameters" />

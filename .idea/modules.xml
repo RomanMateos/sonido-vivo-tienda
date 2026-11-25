@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/sonido-vivo-tienda.iml" filepath="$PROJECT_DIR$/.idea/sonido-vivo-tienda.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sonido-vivo-tienda/sonido-vivo-tienda.iml" filepath="$PROJECT_DIR$/sonido-vivo-tienda/sonido-vivo-tienda.iml" />
     </modules>
   </component>
 </project>

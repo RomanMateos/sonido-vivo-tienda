@@ -20,22 +20,22 @@ public class RegistroUsuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true, length = 20)
+    @Column(nullable = false, unique = true, length = 9)
     private String run;
 
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false, length = 50)
     private String nombre;
 
-    @Column(nullable = false, length = 120)
+    @Column(nullable = false, length = 100)
     private String apellidos;
 
-    @Column(nullable = false, unique = true, length = 120)
+    @Column(nullable = false, unique = true, length = 100)
     private String email;
 
     @Column(length = 30)
     private String telefono;
 
-    @Column(nullable = false, length = 200)
+    @Column(nullable = false, length = 300)
     private String direccion;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)

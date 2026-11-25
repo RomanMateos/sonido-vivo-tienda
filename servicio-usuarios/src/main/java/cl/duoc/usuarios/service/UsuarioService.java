@@ -42,6 +42,10 @@ public class UsuarioService {
         Comuna comuna = comunaRepository.findById(request.getComunaId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "La comuna seleccionada no existe"));
 
+        if (request.getRegionId() != null && !comuna.getRegion().getId().equals(request.getRegionId())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La comuna seleccionada no pertenece a la región indicada");
+        }
+
         RegistroUsuario nuevo = RegistroUsuario.builder()
                 .run(runNormalizado)
                 .nombre(request.getNombre().trim())
@@ -78,6 +82,10 @@ public class UsuarioService {
 
         Comuna comuna = comunaRepository.findById(request.getComunaId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "La comuna seleccionada no existe"));
+
+        if (request.getRegionId() != null && !comuna.getRegion().getId().equals(request.getRegionId())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La comuna seleccionada no pertenece a la región indicada");
+        }
 
         boolean estadoActivo = request.getActivo() != null ? request.getActivo() : true;
 
@@ -137,6 +145,10 @@ public class UsuarioService {
 
         Comuna comuna = comunaRepository.findById(request.getComunaId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "La comuna seleccionada no existe"));
+
+        if (request.getRegionId() != null && !comuna.getRegion().getId().equals(request.getRegionId())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La comuna seleccionada no pertenece a la región indicada");
+        }
 
         existente.setRun(runNormalizado);
         existente.setNombre(request.getNombre().trim());

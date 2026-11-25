@@ -1,0 +1,13 @@
+package cl.duoc.blog;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class ServicioBlogApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(ServicioBlogApplication.class, args);
+	}
+
+}

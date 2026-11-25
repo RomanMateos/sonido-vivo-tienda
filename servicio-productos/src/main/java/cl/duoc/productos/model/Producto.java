@@ -5,18 +5,14 @@ import lombok.*;
 
 @Entity
 @Table(name = "productos")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 public class Producto {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(nullable = false, length = 5)
+    private String id;
 
-    @Column(nullable = false, length = 150)
+    @Column(nullable = false, length = 100)
     private String nombre;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -30,10 +26,10 @@ public class Producto {
     @Column(nullable = false)
     private Integer precio;
 
-    @Column(nullable = false, length = 500)
+    @Column(nullable = true, length = 500)
     private String descripcion;
 
-    @Column(nullable = false, length = 500)
+    @Column(nullable = true, length = 500)
     private String imagen;
 
     @Builder.Default

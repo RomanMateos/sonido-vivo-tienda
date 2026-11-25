@@ -20,13 +20,13 @@ public class Venta {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "comprador_nombre", nullable = false, length = 100)
+    @Column(name = "comprador_nombre", nullable = false, length = 50)
     private String compradorNombre;
 
     @Column(name = "comprador_apellidos", nullable = false, length = 100)
     private String compradorApellidos;
 
-    @Column(name = "comprador_email", nullable = false, length = 120)
+    @Column(name = "comprador_email", nullable = false, length = 100)
     private String compradorEmail;
 
     @Column(name = "comprador_region", nullable = false, length = 100)
@@ -35,7 +35,7 @@ public class Venta {
     @Column(name = "comprador_comuna", nullable = false, length = 100)
     private String compradorComuna;
 
-    @Column(name = "comprador_direccion", nullable = false, length = 200)
+    @Column(name = "comprador_direccion", nullable = false, length = 300)
     private String compradorDireccion;
 
     @Column(nullable = false, updatable = false)

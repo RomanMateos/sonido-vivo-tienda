@@ -29,7 +29,7 @@ public class ProductoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductoResponse> obtenerPorId(@PathVariable Long id) {
+    public ResponseEntity<ProductoResponse> obtenerPorId(@PathVariable String id) {
         return ResponseEntity.ok(productoService.obtenerPorId(id));
     }
 
@@ -41,27 +41,27 @@ public class ProductoController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMINISTRADOR')")
-    public ResponseEntity<ProductoResponse> actualizar(@PathVariable Long id,
+    public ResponseEntity<ProductoResponse> actualizar(@PathVariable String id,
                                                        @Valid @RequestBody ProductoRequest request) {
         return ResponseEntity.ok(productoService.actualizar(id, request));
     }
 
     @PatchMapping("/{id}/inventario")
     @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'TRABAJADOR')")
-    public ResponseEntity<ProductoResponse> actualizarInventario(@PathVariable Long id,
+    public ResponseEntity<ProductoResponse> actualizarInventario(@PathVariable String id,
                                                                  @Valid @RequestBody ActualizarStockRequest request) {
         return ResponseEntity.ok(productoService.actualizarInventarioManual(id, request));
     }
 
     @PatchMapping("/{id}/stock")
-    public ResponseEntity<ProductoResponse> procesarMovimientoStock(@PathVariable Long id,
+    public ResponseEntity<ProductoResponse> procesarMovimientoStock(@PathVariable String id,
                                                                     @Valid @RequestBody MovimientoStockRequest request) {
         return ResponseEntity.ok(productoService.procesarMovimientoStock(id, request));
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMINISTRADOR')")
-    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
+    public ResponseEntity<Void> eliminar(@PathVariable String id) {
         productoService.eliminar(id);
         return ResponseEntity.noContent().build();
     }

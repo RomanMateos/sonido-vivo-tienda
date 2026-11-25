@@ -26,10 +26,10 @@ public class Boleta {
     @Column(name = "fecha_emision", nullable = false, updatable = false)
     private LocalDateTime fechaEmision;
 
-    @Column(name = "comprador_nombre_completo", nullable = false, length = 210)
+    @Column(name = "comprador_nombre_completo", nullable = false, length = 150)
     private String compradorNombreCompleto;
 
-    @Column(name = "comprador_email", nullable = false, length = 120)
+    @Column(name = "comprador_email", nullable = false, length = 100)
     private String compradorEmail;
 
     @Column(name = "metodo_pago", nullable = false, length = 40)

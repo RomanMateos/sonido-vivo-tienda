@@ -21,7 +21,7 @@ public class UbicacionService {
 
     @Transactional(readOnly = true)
     public List<Region> listarRegiones() {
-        return regionRepository.findAllByOrderByNombreAsc();
+        return regionRepository.findAllByOrderByIdAsc();
     }
 
     @Transactional(readOnly = true)

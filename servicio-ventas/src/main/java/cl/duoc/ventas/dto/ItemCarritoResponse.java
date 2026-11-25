@@ -7,7 +7,7 @@ import lombok.Data;
 @Builder
 public class ItemCarritoResponse {
     private Long id;
-    private Long productoId;
+    private String productoId;
     private String nombreProducto;
     private Integer precioUnitario;
     private String imagen;

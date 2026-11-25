@@ -19,25 +19,27 @@ public class ProductosClient {
         this.productosRestClient = productosRestClient;
     }
 
-    public ProductoExternalResponse obtenerProducto(Long productoId) {
+    public ProductoExternalResponse obtenerProducto(String productoId) {
+        String idLimpio = productoId.trim().toUpperCase();
         try {
             ProductoExternalResponse producto = productosRestClient.get()
-                    .uri("/api/productos/{id}", productoId)
+                    .uri("/api/productos/{id}", idLimpio)
                     .retrieve()
                     .body(ProductoExternalResponse.class);
 
             if (producto == null) {
-                throw new ResourceNotFoundException("Producto no encontrado con ID: " + productoId);
+                throw new ResourceNotFoundException("Producto no encontrado con ID: " + idLimpio);
             }
             return producto;
         } catch (HttpClientErrorException.NotFound ex) {
-            throw new ResourceNotFoundException("Producto no encontrado con ID: " + productoId);
+            throw new ResourceNotFoundException("Producto no encontrado con ID: " + idLimpio);
         }
     }
 
-    public void procesarMovimientoStock(Long productoId, String operacion, Integer cantidad, String authHeader) {
+    public void procesarMovimientoStock(String productoId, String operacion, Integer cantidad, String authHeader) {
+        String idLimpio = productoId.trim().toUpperCase();
         productosRestClient.patch()
-                .uri("/api/productos/{id}/stock", productoId)
+                .uri("/api/productos/{id}/stock", idLimpio)
                 .header(HttpHeaders.AUTHORIZATION, authHeader)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(new MovimientoStockExternalRequest(operacion, cantidad))

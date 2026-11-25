@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class ProductoExternalResponse {
-    private Long id;
+    private String id;
     private String nombre;
     private Integer precio;
     private String imagen;

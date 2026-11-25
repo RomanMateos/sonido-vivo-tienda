@@ -7,14 +7,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.Optional;
 
-public interface ProductoRepository extends JpaRepository<Producto, Long> {
+public interface ProductoRepository extends JpaRepository<Producto, String> {
 
     @Override
     @EntityGraph(attributePaths = {"categoria", "marca"})
     List<Producto> findAll();
 
     @EntityGraph(attributePaths = {"categoria", "marca"})
-    Optional<Producto> findWithDetailsById(Long id);
+    Optional<Producto> findWithDetailsById(String id);
 
     @EntityGraph(attributePaths = {"categoria", "marca"})
     List<Producto> findByCategoriaId(Long categoriaId);

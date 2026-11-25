@@ -23,7 +23,7 @@ DROP TABLE IF EXISTS sonido_productos.marcas;
 DROP TABLE IF EXISTS sonido_ventas.detalle_ventas;
 DROP TABLE IF EXISTS sonido_ventas.ventas;
 DROP TABLE IF EXISTS sonido_ventas.detalle_carrito;
-DROP TABLE IF EXISTS sonido_ventas.carrito;
+DROP TABLE IF EXISTS sonido_ventas.carritos;
 
 -- 5. sonido_blog
 DROP TABLE IF EXISTS sonido_blog.blog;
@@ -35,7 +35,8 @@ DROP TABLE IF EXISTS sonido_contacto.contacto;
 DROP TABLE IF EXISTS sonido_boletas.detalle_boletas;
 DROP TABLE IF EXISTS sonido_boletas.boletas;
 
-
+-- 8. sonido_reportes
+DROP TABLE IF EXISTS sonido_reportes.reportes;
 -- ----------------------------------------------------------------------------
 -- 0. BASES DE DATOS Y USUARIOS INDEPENDIENTES
 -- ----------------------------------------------------------------------------
@@ -87,8 +88,8 @@ USE sonido_autenticacion;
 
 CREATE TABLE IF NOT EXISTS usuarios (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    email VARCHAR(120) NOT NULL UNIQUE,
-    contrasena VARCHAR(255) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    contrasena VARCHAR(10) NOT NULL,
     rol VARCHAR(30) NOT NULL,
     activo BOOLEAN NOT NULL DEFAULT TRUE
 ) ENGINE=InnoDB;
@@ -113,11 +114,11 @@ CREATE TABLE IF NOT EXISTS comunas (
 
 CREATE TABLE IF NOT EXISTS registro_usuarios (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    run VARCHAR(20) NOT NULL UNIQUE,
-    nombre VARCHAR(100) NOT NULL,
-    apellidos VARCHAR(120) NOT NULL,
-    email VARCHAR(120) NOT NULL UNIQUE,
-    telefono VARCHAR(30) NULL,
+    run VARCHAR(9) NOT NULL UNIQUE,
+    nombre VARCHAR(50) NOT NULL,
+    apellidos VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    telefono VARCHAR(12) NULL,
     direccion VARCHAR(200) NOT NULL,
     comuna_id BIGINT NOT NULL,
     rol VARCHAR(30) NOT NULL,
@@ -142,18 +143,18 @@ CREATE TABLE IF NOT EXISTS marcas (
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS productos (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(150) NOT NULL,
+    id VARCHAR(5) PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
     categoria_id BIGINT NOT NULL,
     marca_id BIGINT NOT NULL,
     precio INT NOT NULL,
-    descripcion VARCHAR(500) NOT NULL,
-    imagen VARCHAR(500) NOT NULL,
+    descripcion VARCHAR(500) NULL,
+    imagen VARCHAR(500) NULL,
     en_oferta BOOLEAN NOT NULL DEFAULT FALSE,
     stock INT NOT NULL DEFAULT 0,
     CONSTRAINT fk_productos_categoria FOREIGN KEY (categoria_id) REFERENCES categorias(id),
     CONSTRAINT fk_productos_marca FOREIGN KEY (marca_id) REFERENCES marcas(id)
-) ENGINE=InnoDB AUTO_INCREMENT=1000;
+    ) ENGINE=InnoDB;
 
 -- ----------------------------------------------------------------------------
 -- 4. BASE DE DATOS: sonido_ventas (Puerto 8084)
@@ -167,7 +168,7 @@ CREATE TABLE IF NOT EXISTS ventas (
     comprador_email VARCHAR(120) NOT NULL,
     comprador_region VARCHAR(100) NOT NULL,
     comprador_comuna VARCHAR(100) NOT NULL,
-    comprador_direccion VARCHAR(200) NOT NULL,
+    comprador_direccion VARCHAR(300) NOT NULL,
     fecha DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     tipo_despacho VARCHAR(30) NOT NULL,
     lugar_despacho VARCHAR(250) NOT NULL,
@@ -178,7 +179,7 @@ CREATE TABLE IF NOT EXISTS ventas (
 CREATE TABLE IF NOT EXISTS detalle_ventas (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     venta_id BIGINT NOT NULL,
-    producto_id BIGINT NOT NULL,
+    producto_id VARCHAR(5) NOT NULL,
     nombre_producto VARCHAR(150) NOT NULL,
     precio_unitario INT NOT NULL,
     cantidad INT NOT NULL,
@@ -187,22 +188,22 @@ CREATE TABLE IF NOT EXISTS detalle_ventas (
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS carritos (
-                                        id BIGINT AUTO_INCREMENT PRIMARY KEY,
-                                        usuario_email VARCHAR(120) NOT NULL UNIQUE,
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    usuario_email VARCHAR(120) NOT NULL UNIQUE,
     fecha_actualizacion DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS detalle_carrito (
-                                               id BIGINT AUTO_INCREMENT PRIMARY KEY,
-                                               carrito_id BIGINT NOT NULL,
-                                               producto_id BIGINT NOT NULL,
-                                               nombre_producto VARCHAR(150) NOT NULL,
-    precio_unitario INT NOT NULL,
-    imagen VARCHAR(500) NOT NULL,
-    cantidad INT NOT NULL,
-    CONSTRAINT fk_detalle_carrito_carrito FOREIGN KEY (carrito_id) REFERENCES carritos(id) ON DELETE CASCADE,
-    CONSTRAINT uk_carrito_producto UNIQUE (carrito_id, producto_id)
-    ) ENGINE=InnoDB;
+	id BIGINT AUTO_INCREMENT PRIMARY KEY,
+	carrito_id BIGINT NOT NULL,
+	producto_id VARCHAR(5) NOT NULL,
+	nombre_producto VARCHAR(150) NOT NULL,
+	precio_unitario INT NOT NULL,
+	imagen VARCHAR(500) NULL,
+	cantidad INT NOT NULL,
+	CONSTRAINT fk_detalle_carrito_carrito FOREIGN KEY (carrito_id) REFERENCES carritos(id) ON DELETE CASCADE,
+	CONSTRAINT uk_carrito_producto UNIQUE (carrito_id, producto_id)
+	) ENGINE=InnoDB;
 
 -- ----------------------------------------------------------------------------
 -- 5. BASE DE DATOS: sonido_blog (Puerto 8085)
@@ -259,7 +260,7 @@ CREATE TABLE IF NOT EXISTS boletas (
 CREATE TABLE IF NOT EXISTS detalle_boletas (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     boleta_id BIGINT NOT NULL,
-    producto_id BIGINT NOT NULL,
+    producto_id VARCHAR(5) NOT NULL,
     nombre_producto VARCHAR(150) NOT NULL,
     precio_unitario INT NOT NULL,
     cantidad INT NOT NULL,

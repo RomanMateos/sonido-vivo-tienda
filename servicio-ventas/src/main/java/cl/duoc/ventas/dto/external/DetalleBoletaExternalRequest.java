@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DetalleBoletaExternalRequest {
-    private Long productoId;
+    private String productoId;
     private String nombreProducto;
     private Integer precioUnitario;
     private Integer cantidad;

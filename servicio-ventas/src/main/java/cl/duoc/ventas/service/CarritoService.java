@@ -33,11 +33,12 @@ public class CarritoService {
 
     @Transactional
     public CarritoResponse agregarItem(String email, AgregarItemCarritoRequest request) {
-        ProductoExternalResponse producto = productosClient.obtenerProducto(request.getProductoId());
+        String idNormalizado = request.getProductoId().trim().toUpperCase();
+        ProductoExternalResponse producto = productosClient.obtenerProducto(idNormalizado);
         Carrito carrito = obtenerOCrearEntidad(email);
 
         Optional<DetalleCarrito> existenteOpt = carrito.getItems().stream()
-                .filter(i -> i.getProductoId().equals(request.getProductoId()))
+                .filter(i -> i.getProductoId().equalsIgnoreCase(idNormalizado))
                 .findFirst();
 
         int cantidadFinal = request.getCantidad() + existenteOpt.map(DetalleCarrito::getCantidad).orElse(0);
@@ -68,14 +69,15 @@ public class CarritoService {
     }
 
     @Transactional
-    public CarritoResponse actualizarCantidad(String email, Long productoId, ActualizarCantidadCarritoRequest request) {
-        ProductoExternalResponse producto = productosClient.obtenerProducto(productoId);
+    public CarritoResponse actualizarCantidad(String email, String productoId, ActualizarCantidadCarritoRequest request) {
+        String idNormalizado = productoId.trim().toUpperCase();
+        ProductoExternalResponse producto = productosClient.obtenerProducto(idNormalizado);
         Carrito carrito = obtenerOCrearEntidad(email);
 
         DetalleCarrito item = carrito.getItems().stream()
-                .filter(i -> i.getProductoId().equals(productoId))
+                .filter(i -> i.getProductoId().equalsIgnoreCase(idNormalizado))
                 .findFirst()
-                .orElseThrow(() -> new ResourceNotFoundException("El producto con ID " + productoId + " no está en tu carrito"));
+                .orElseThrow(() -> new ResourceNotFoundException("El producto con ID " + idNormalizado + " no está en tu carrito"));
 
         if (producto.getStock() < request.getCantidad()) {
             throw new BusinessException("Stock insuficiente para '" + producto.getNombre()
@@ -91,12 +93,13 @@ public class CarritoService {
     }
 
     @Transactional
-    public CarritoResponse eliminarItem(String email, Long productoId) {
+    public CarritoResponse eliminarItem(String email, String productoId) {
+        String idNormalizado = productoId.trim().toUpperCase();
         Carrito carrito = obtenerOCrearEntidad(email);
-        boolean eliminado = carrito.getItems().removeIf(i -> i.getProductoId().equals(productoId));
+        boolean eliminado = carrito.getItems().removeIf(i -> i.getProductoId().equalsIgnoreCase(idNormalizado));
 
         if (!eliminado) {
-            throw new ResourceNotFoundException("El producto con ID " + productoId + " no está en tu carrito");
+            throw new ResourceNotFoundException("El producto con ID " + idNormalizado + " no está en tu carrito");
         }
 
         return toResponse(carritoRepository.save(carrito));

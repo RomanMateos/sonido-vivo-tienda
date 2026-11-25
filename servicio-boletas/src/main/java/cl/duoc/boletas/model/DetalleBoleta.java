@@ -20,10 +20,10 @@ public class DetalleBoleta {
     @JoinColumn(name = "boleta_id", nullable = false)
     private Boleta boleta;
 
-    @Column(name = "producto_id", nullable = false)
-    private Long productoId;
+    @Column(name = "producto_id", nullable = false, length = 5)
+    private String productoId;
 
-    @Column(name = "nombre_producto", nullable = false, length = 150)
+    @Column(name = "nombre_producto", nullable = false, length = 100)
     private String nombreProducto;
 
     @Column(name = "precio_unitario", nullable = false)

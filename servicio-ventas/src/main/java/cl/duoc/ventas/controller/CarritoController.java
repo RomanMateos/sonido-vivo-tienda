@@ -30,14 +30,14 @@ public class CarritoController {
 
     @PutMapping("/items/{productoId}")
     public ResponseEntity<CarritoResponse> actualizarCantidad(Authentication authentication,
-                                                              @PathVariable Long productoId,
+                                                              @PathVariable String productoId,
                                                               @Valid @RequestBody ActualizarCantidadCarritoRequest request) {
         return ResponseEntity.ok(carritoService.actualizarCantidad(authentication.getName(), productoId, request));
     }
 
     @DeleteMapping("/items/{productoId}")
     public ResponseEntity<CarritoResponse> eliminarItem(Authentication authentication,
-                                                        @PathVariable Long productoId) {
+                                                        @PathVariable String productoId) {
         return ResponseEntity.ok(carritoService.eliminarItem(authentication.getName(), productoId));
     }
 

@@ -20,7 +20,7 @@ public class Carrito {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "usuario_email", nullable = false, unique = true, length = 120)
+    @Column(name = "usuario_email", nullable = false, unique = true, length = 100)
     private String usuarioEmail;
 
     @Column(name = "fecha_actualizacion", nullable = false)

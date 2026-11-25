@@ -41,24 +41,38 @@ public class ProductoService {
     }
 
     @Transactional(readOnly = true)
-    public ProductoResponse obtenerPorId(Long id) {
-        Producto producto = productoRepository.findWithDetailsById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Producto no encontrado con ID: " + id));
+    public ProductoResponse obtenerPorId(String id) {
+        String idNormalizado = id.trim().toUpperCase();
+        Producto producto = productoRepository.findWithDetailsById(idNormalizado)
+                .orElseThrow(() -> new ResourceNotFoundException("Producto no encontrado con ID: " + idNormalizado));
         return toResponse(producto);
     }
 
     @Transactional
     public ProductoResponse crear(ProductoRequest request) {
+        String idNormalizado = request.getId().trim().toUpperCase();
+        if (productoRepository.existsById(idNormalizado)) {
+            throw new BusinessException("Ya existe un producto registrado con el ID: " + idNormalizado);
+        }
+
         Categoria categoria = categoriaService.buscarEntidad(request.getCategoriaId());
         Marca marca = marcaService.buscarEntidad(request.getMarcaId());
 
+        String descripcionLimpia = (request.getDescripcion() != null && !request.getDescripcion().isBlank())
+                ? request.getDescripcion().trim()
+                : null;
+        String imagenLimpia = (request.getImagen() != null && !request.getImagen().isBlank())
+                ? request.getImagen().trim()
+                : null;
+
         Producto producto = Producto.builder()
+                .id(idNormalizado)
                 .nombre(request.getNombre().trim())
                 .categoria(categoria)
                 .marca(marca)
                 .precio(request.getPrecio())
-                .descripcion(request.getDescripcion().trim())
-                .imagen(request.getImagen().trim())
+                .descripcion(descripcionLimpia)
+                .imagen(imagenLimpia)
                 .enOferta(Boolean.TRUE.equals(request.getEnOferta()))
                 .stock(request.getStock())
                 .build();
@@ -67,19 +81,27 @@ public class ProductoService {
     }
 
     @Transactional
-    public ProductoResponse actualizar(Long id, ProductoRequest request) {
-        Producto producto = productoRepository.findWithDetailsById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Producto no encontrado con ID: " + id));
+    public ProductoResponse actualizar(String id, ProductoRequest request) {
+        String idNormalizado = id.trim().toUpperCase();
+        Producto producto = productoRepository.findWithDetailsById(idNormalizado)
+                .orElseThrow(() -> new ResourceNotFoundException("Producto no encontrado con ID: " + idNormalizado));
 
         Categoria categoria = categoriaService.buscarEntidad(request.getCategoriaId());
         Marca marca = marcaService.buscarEntidad(request.getMarcaId());
+
+        String descripcionLimpia = (request.getDescripcion() != null && !request.getDescripcion().isBlank())
+                ? request.getDescripcion().trim()
+                : null;
+        String imagenLimpia = (request.getImagen() != null && !request.getImagen().isBlank())
+                ? request.getImagen().trim()
+                : null;
 
         producto.setNombre(request.getNombre().trim());
         producto.setCategoria(categoria);
         producto.setMarca(marca);
         producto.setPrecio(request.getPrecio());
-        producto.setDescripcion(request.getDescripcion().trim());
-        producto.setImagen(request.getImagen().trim());
+        producto.setDescripcion(descripcionLimpia);
+        producto.setImagen(imagenLimpia);
         producto.setEnOferta(Boolean.TRUE.equals(request.getEnOferta()));
         producto.setStock(request.getStock());
 
@@ -87,18 +109,20 @@ public class ProductoService {
     }
 
     @Transactional
-    public ProductoResponse actualizarInventarioManual(Long id, ActualizarStockRequest request) {
-        Producto producto = productoRepository.findWithDetailsById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Producto no encontrado con ID: " + id));
+    public ProductoResponse actualizarInventarioManual(String id, ActualizarStockRequest request) {
+        String idNormalizado = id.trim().toUpperCase();
+        Producto producto = productoRepository.findWithDetailsById(idNormalizado)
+                .orElseThrow(() -> new ResourceNotFoundException("Producto no encontrado con ID: " + idNormalizado));
 
         producto.setStock(request.getStock());
         return toResponse(productoRepository.save(producto));
     }
 
     @Transactional
-    public ProductoResponse procesarMovimientoStock(Long id, MovimientoStockRequest request) {
-        Producto producto = productoRepository.findWithDetailsById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Producto no encontrado con ID: " + id));
+    public ProductoResponse procesarMovimientoStock(String id, MovimientoStockRequest request) {
+        String idNormalizado = id.trim().toUpperCase();
+        Producto producto = productoRepository.findWithDetailsById(idNormalizado)
+                .orElseThrow(() -> new ResourceNotFoundException("Producto no encontrado con ID: " + idNormalizado));
 
         if (request.getOperacion() == TipoOperacionStock.DESCONTAR) {
             if (producto.getStock() < request.getCantidad()) {
@@ -114,9 +138,10 @@ public class ProductoService {
     }
 
     @Transactional
-    public void eliminar(Long id) {
-        Producto producto = productoRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Producto no encontrado con ID: " + id));
+    public void eliminar(String id) {
+        String idNormalizado = id.trim().toUpperCase();
+        Producto producto = productoRepository.findById(idNormalizado)
+                .orElseThrow(() -> new ResourceNotFoundException("Producto no encontrado con ID: " + idNormalizado));
         productoRepository.delete(producto);
     }
 

@@ -89,7 +89,7 @@ USE sonido_autenticacion;
 CREATE TABLE IF NOT EXISTS usuarios (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(100) NOT NULL UNIQUE,
-    contrasena VARCHAR(10) NOT NULL,
+    contrasena VARCHAR(255) NOT NULL,
     rol VARCHAR(30) NOT NULL,
     activo BOOLEAN NOT NULL DEFAULT TRUE
 ) ENGINE=InnoDB;
@@ -118,8 +118,8 @@ CREATE TABLE IF NOT EXISTS registro_usuarios (
     nombre VARCHAR(50) NOT NULL,
     apellidos VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
-    telefono VARCHAR(12) NULL,
-    direccion VARCHAR(200) NOT NULL,
+    telefono VARCHAR(30) NULL,
+    direccion VARCHAR(300) NOT NULL,
     comuna_id BIGINT NOT NULL,
     rol VARCHAR(30) NOT NULL,
     activo BOOLEAN NOT NULL DEFAULT TRUE,
@@ -163,9 +163,9 @@ USE sonido_ventas;
 
 CREATE TABLE IF NOT EXISTS ventas (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    comprador_nombre VARCHAR(100) NOT NULL,
+    comprador_nombre VARCHAR(50) NOT NULL,
     comprador_apellidos VARCHAR(100) NOT NULL,
-    comprador_email VARCHAR(120) NOT NULL,
+    comprador_email VARCHAR(100) NOT NULL,
     comprador_region VARCHAR(100) NOT NULL,
     comprador_comuna VARCHAR(100) NOT NULL,
     comprador_direccion VARCHAR(300) NOT NULL,
@@ -180,7 +180,7 @@ CREATE TABLE IF NOT EXISTS detalle_ventas (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     venta_id BIGINT NOT NULL,
     producto_id VARCHAR(5) NOT NULL,
-    nombre_producto VARCHAR(150) NOT NULL,
+    nombre_producto VARCHAR(100) NOT NULL,
     precio_unitario INT NOT NULL,
     cantidad INT NOT NULL,
     subtotal INT NOT NULL,
@@ -189,7 +189,7 @@ CREATE TABLE IF NOT EXISTS detalle_ventas (
 
 CREATE TABLE IF NOT EXISTS carritos (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    usuario_email VARCHAR(120) NOT NULL UNIQUE,
+    usuario_email VARCHAR(100) NOT NULL UNIQUE,
     fecha_actualizacion DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     ) ENGINE=InnoDB;
 

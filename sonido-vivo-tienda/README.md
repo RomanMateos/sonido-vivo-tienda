@@ -1,23 +1,25 @@
-# Sonido Vivo - Backend
+# Microservicio Tienda / Catalogo (sonido-vivo-tienda)
 
-Spring Boot 4 + MySQL. API REST en `/api/v1`.
+Backend desarrollado en Spring Boot para la gestion del catalogo de productos, categorias y marcas de la tienda Sonido Vivo (Evaluacion Parcial 3 - DSY1104 Desarrollo FullStack II).
 
-## Cómo levantarlo
-1. Tener MySQL en marcha y crear la base y un usuario (como administrador):
-   ```sql
-   CREATE DATABASE sonidovivo CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-   CREATE USER 'sonidovivo_app'@'localhost' IDENTIFIED BY 'ELIGE_UNA_CLAVE';
-   GRANT ALL PRIVILEGES ON sonidovivo.* TO 'sonidovivo_app'@'localhost';
-   ```
-2. En PowerShell, dentro del proyecto (la clave NO va en el código):
-   ```powershell
-   $env:DB_USER="sonidovivo_app"
-   $env:DB_PASSWORD="ELIGE_UNA_CLAVE"
-   .\mvnw.cmd spring-boot:run
-   ```
-3. Swagger: http://localhost:8080/swagger-ui/index.html
+## Tecnologias y Arquitectura
+- Java 17+ / Spring Boot 4
+- Spring Data JPA + MySQL 8 (base de datos sonido_productos normalizada en 3FN)
+- Spring Security + JWT (HMAC-SHA256) para autenticacion stateless y control de acceso por roles (ADMINISTRADOR, VENDEDOR, CLIENTE)
+- Springdoc OpenAPI / Swagger UI con autenticacion Bearer JWT integrada
+- JUnit 5 + Mockito para pruebas unitarias en la capa de servicios
 
-## Convenciones
-- Paquetes: `cl.duoc.sonidovivo.tienda.{entities, repositories, services, controllers, exceptions}`
-- Rutas versionadas: `/api/v1/...`
-- Ramas: `feature/<tema>` → Pull Request a `develop`. Nadie sube directo a `main`.
+## Requisitos y Variables de Entorno
+- DB_USER: Usuario de conexion a MySQL (ej. sonidovivo_app)
+- DB_PASSWORD: Contrasena de MySQL
+- JWT_SECRET: Clave secreta en Base64 compartida con autenticacion
+
+## Ejecucion Local y Pruebas
+- Ejecutar pruebas unitarias (10 tests): ./mvnw test
+- Iniciar servidor (puerto 8083): ./mvnw spring-boot:run
+- Documentacion Swagger UI: http://localhost:8083/swagger-ui.html
+
+## Endpoints Principales (/api/v1)
+- /productos: GET (publico), POST, PUT, DELETE (rol ADMINISTRADOR)
+- /categorias: GET (publico), POST, PUT, DELETE (rol ADMINISTRADOR)
+- /marcas: GET (publico), POST, PUT, DELETE (rol ADMINISTRADOR)
